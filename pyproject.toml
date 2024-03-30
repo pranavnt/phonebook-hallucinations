@@ -13,6 +13,7 @@ openai = "^1.14.3"
 pydantic = "^2.6.4"
 faker = "^24.4.0"
 numpy = "^1.26.4"
+wandb = "^0.16.5"
 
 
 [build-system]
