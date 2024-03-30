@@ -13,29 +13,24 @@ dataset = pickle.load(open("phonebook.pkl", "rb"))
 dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
 
 val = FakePhoneDataset(num_people=50, num_samples=32)
-val_dataloader = DataLoader(val, batch_size=16, shuffle=True)
+val_dataloader = DataLoader(val, batch_size=1, shuffle=True)
 
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
 tokenizer = Tokenizer("./tokenizer.model")
 
 model = Transformer(
-    embed_size=256,
-    vocab_size=32000,
+    embed_size=128,
+    vocab_size=1024,
     num_layers=4,
     heads=8,
     dropout=0.1,
-    forward_expansion=512,
+    forward_expansion=256,
     device=device
 )
 
 model.to(device)
-
-print(sum(p.numel() for p in model.parameters()))
-
-exit()
-
-optimizer = Adam(model.parameters(), lr=0.001)
+optimizer = Adam(model.parameters(), lr=0.001, weight_decay=0.01)
 
 num_epochs = 10
 
@@ -51,13 +46,9 @@ if not os.path.exists("./checkpoint"):
 for epoch in range(num_epochs):
     for batch_idx, batch in enumerate(dataloader):
         batch = tokenizer.batch_encode(batch).to(device)
-        print(batch.shape)
         inputs, labels = batch[:, :-1], batch[:, 1:]
-        print(inputs.shape)
-        print(labels.shape)
 
         out = model(inputs)
-        print(out.shape)
         out = out.view(-1, out.size(-1))
         labels = labels.contiguous().view(-1)
         loss = F.cross_entropy(out, labels)
