@@ -50,10 +50,14 @@ def fake_phone():
     return f"({random.randint(100, 999)}) {random.randint(100, 999)}-{random.randint(1000, 9999)}"
 
 if __name__ == "__main__":
-    dataset = FakePhoneDataset(2000, 20000)
-    with open("phonebook.pkl", "wb") as f:
-        pickle.dump(dataset, f)
+    # dataset = FakePhoneDataset(2000, 20000)
+    # with open("phonebook.pkl", "wb") as f:
+        # pickle.dump(dataset, f)
 
     ds = pickle.load(open("phonebook.pkl", "rb"))
+    # dump to phonebook.txt
+    with open("phonebook.txt", "w") as f:
+        for entry in ds:
+            f.write(entry + "\n\n")
     print(ds[0])
 
