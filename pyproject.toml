@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "hallucinations-memory-safety"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+torch = "^2.2.2"
+sentencepiece = "^0.2.0"
+openai = "^1.14.3"
+pydantic = "^2.6.4"
+faker = "^24.4.0"
+numpy = "^1.26.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
