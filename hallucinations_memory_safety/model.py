@@ -23,6 +23,13 @@ class Tokenizer:
     def encode(self, s: str) -> List[int]:
         return [self._model.bos_id(), *self._model.encode(s)]
 
+    def batch_encode(self, batch: List[str]) -> List[List[int]]:
+        data = torch.zeros(len(batch), 512, dtype=torch.int64)
+        for i, s in enumerate(batch):
+            encoded = torch.tensor(self._model.encode(s))
+            data[i, :len(encoded)] = encoded
+        return data
+
     def decode(self, t: List[int]) -> str:
         return self._model.decode(t)
 
@@ -50,7 +57,7 @@ class TransformerBlock(nn.Module):
         return out
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
+    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000, device=None):
         super().__init__()
         self.dropout = nn.Dropout(p=dropout)
 
@@ -59,17 +66,20 @@ class PositionalEncoding(nn.Module):
         pe = torch.zeros(max_len, 1, d_model)
         pe[:, 0, 0::2] = torch.sin(position * div_term)
         pe[:, 0, 1::2] = torch.cos(position * div_term)
-        self.register_buffer('pe', pe)
+
+        if device is not None:
+            self.dropout.to(device)
+            self.pe = pe.to(device)
 
     def forward(self, x):
         x = x + self.pe[:x.size(0)]
         return self.dropout(x)
 
 class Transformer(nn.Module):
-    def __init__(self, embed_size, num_layers, heads, dropout, forward_expansion):
+    def __init__(self, vocab_size, embed_size, num_layers, heads, dropout, forward_expansion, device=None):
         super(Transformer, self).__init__()
-        self.embed_size = embed_size
-        self.pos_embedding = PositionalEncoding(embed_size, dropout)
+        self.embedding = nn.Embedding(vocab_size, embed_size)
+        self.pos_embedding = PositionalEncoding(embed_size, dropout, device=device)
         self.transformer_layers = nn.ModuleList([TransformerBlock(embed_size, heads, dropout, forward_expansion) for _ in range(num_layers)])
 
     def forward(self, x, mask=None):

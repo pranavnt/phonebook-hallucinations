@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hallucinations-memory-safety"
+name = "phonebook-hallucinations"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
