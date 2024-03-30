@@ -11,7 +11,6 @@ import wandb
 dataset = pickle.load(open("phonebook.pkl", "rb"))
 dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
 
-# 1) cuda 2) mps 3) cpu
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
 tokenizer = Tokenizer("./tokenizer.model")
@@ -29,19 +28,21 @@ model.to(device)
 
 optimizer = Adam(model.parameters(), lr=0.001)
 
-for batch_idx, batch in enumerate(dataloader):
-    batch = tokenizer.batch_encode(batch).to(device)
+num_epochs = 10
 
-    out = model(batch)
+wandb.init(project="hallucinations_memory_safety", entity="pranavnt")
 
-    loss = F.cross_entropy(out, batch)
-    print(loss)
+for epoch in range(num_epochs):
+    for batch_idx, batch in enumerate(dataloader):
+        batch = tokenizer.batch_encode(batch).to(device)
 
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+        out = model(batch)
 
-    print("Batch: ", batch_idx)
+        loss = F.cross_entropy(out, batch)
+        print(loss)
 
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
-
+        print("Batch: ", batch_idx)

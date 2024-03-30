@@ -2,7 +2,7 @@
 name = "phonebook-hallucinations"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Pranav Teegavarapu <pranavnt@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
