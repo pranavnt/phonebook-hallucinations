@@ -1,0 +1,49 @@
+{
+    "os": "macOS-14.3-arm64-arm-64bit",
+    "python": "3.12.2",
+    "heartbeatAt": "2024-03-30T08:28:43.136498",
+    "startedAt": "2024-03-30T08:28:42.721483",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/pranavnt/src/pranavnt/pranavnt/phonebook-hallucinations/phonebook_hallucinations/train.py",
+    "codePathLocal": "phonebook_hallucinations/train.py",
+    "codePath": "phonebook_hallucinations/train.py",
+    "git": {
+        "remote": "https://github.com/pranavnt/phonebook-hallucinations",
+        "commit": "3ed5d96fe6298c0dd4bf835e536936d5ffd39c62"
+    },
+    "email": "pranavnt@outlook.com",
+    "root": "/Users/pranavnt/src/pranavnt/pranavnt/phonebook-hallucinations",
+    "host": "Pranavs-MacBook-Pro.local",
+    "username": "pranavnt",
+    "executable": "/Users/pranavnt/Library/Caches/pypoetry/virtualenvs/phonebook-hallucinations-X-37q9JH-py3.12/bin/python3",
+    "cpu_count": 16,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 4056,
+        "min": 1020,
+        "max": 4056
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4056,
+            "min": 1020,
+            "max": 4056
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1858.1917190551758,
+            "used": 9.437564849853516
+        }
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 128.0
+    }
+}
