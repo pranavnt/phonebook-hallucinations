@@ -1,7 +1,0 @@
-
-Epoch: 0, Batch: 0, Loss: 1.74192214012146
-Traceback (most recent call last):
-  File "/Users/pranavnt/src/pranavnt/pranavnt/phonebook-hallucinations/phonebook_hallucinations/train.py", line 41, in <module>
-    batch = tokenizer.batch_encode(batch).to(device)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-KeyboardInterrupt
