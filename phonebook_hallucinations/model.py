@@ -24,7 +24,7 @@ class Tokenizer:
         return [self._model.bos_id(), *self._model.encode(s)]
 
     def batch_encode(self, batch: List[str]) -> List[List[int]]:
-        data = torch.zeros(len(batch), 512, dtype=torch.int64)
+        data = torch.zeros(len(batch), 513, dtype=torch.int64)
         for i, s in enumerate(batch):
             encoded = torch.tensor(self._model.encode(s))
             data[i, :len(encoded)] = encoded
@@ -50,6 +50,7 @@ class TransformerBlock(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, value, key, query, mask):
+        mask = torch.tril(torch.ones(query.shape[1], query.shape[1])).bool().to(query.device)
         attention = self.attention(query, key, value, attn_mask=mask)[0]
         x = self.dropout(self.norm1(attention + query))
         forward = self.feed_forward(x)
@@ -72,7 +73,7 @@ class PositionalEncoding(nn.Module):
             self.pe = pe.to(device)
 
     def forward(self, x):
-        x = x + self.pe[:x.size(0)]
+        x = x + self.pe[:(x.size(0) - 1)]
         return self.dropout(x)
 
 class Transformer(nn.Module):
@@ -87,4 +88,8 @@ class Transformer(nn.Module):
         out = self.pos_embedding(out)
         for layer in self.transformer_layers:
             out = layer(out, out, out, mask)
+        return out
+    
+    def sample(self, x, mask=None):
+        out = self.forward(x, mask)
         return out

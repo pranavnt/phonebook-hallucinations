@@ -46,9 +46,17 @@ for epoch in range(num_epochs):
     for batch_idx, batch in enumerate(dataloader):
         batch = tokenizer.batch_encode(batch).to(device)
 
-        out = model(batch)
+        print(batch.shape)
 
-        loss = F.cross_entropy(out, batch)
+        inputs, labels = batch[:, :-1], batch[:, 1:]
+        print(inputs.shape)
+        print(labels.shape)
+
+        out = model(inputs)
+
+        print(out.shape)
+
+        loss = F.cross_entropy(out, labels)
 
         optimizer.zero_grad()
         loss.backward()
